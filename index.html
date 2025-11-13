@@ -34,8 +34,8 @@
     }
     .brand h1 { margin:0; font-size:20px; color:var(--dark); }
     .brand p { margin:0; color:var(--muted); font-size:13px; }
-    .info-row { display:flex; gap:10px; margin-top:12px; }
-    .info-row>div { flex:1; }
+    .info-row { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    .info-row>div { flex:1; min-width:180px; }
     input {
       width:100%; box-sizing:border-box; padding:8px;
       border-radius:6px; border:1px solid #ddd; font-size:16px;
@@ -74,8 +74,12 @@
         <input id="customerName" type="text" placeholder="Customer name" />
       </div>
       <div>
-        <label>Date</label><br />
+        <label>Bill Date</label><br />
         <input id="billDate" type="text" readonly />
+      </div>
+      <div>
+        <label>Event Date</label><br />
+        <input id="eventDate" type="date" />
       </div>
       <div>
         <label>Bill No.</label><br />
@@ -184,7 +188,8 @@
       const bizName = 'The Voice DJ & Events';
       const bizInfo = 'Surat, Gujarat | 📞 +91 92288 63629';
       const cust = $('customerName').value.trim() || 'Customer';
-      const date = $('billDate').value;
+      const billDate = $('billDate').value;
+      const eventDate = $('eventDate').value ? new Date($('eventDate').value).toLocaleDateString('en-IN') : '—';
       const billNo = $('billNumber').value;
       const grand = $('grandTotal').textContent;
       const advance = parseFloat($('advancePayment').value || 0).toFixed(2);
@@ -207,9 +212,9 @@
 
       const printable = document.createElement('div');
       printable.style.fontFamily = 'Arial, Helvetica, sans-serif';
-      printable.style.padding = '35px 45px 50px 40px'; /* top right bottom left */
+      printable.style.padding = '35px 40px 50px 40px';
       printable.style.background = '#fff';
-      printable.style.width = '7.8in'; /* narrower width */
+      printable.style.width = '7.6in'; /* narrower safe width */
       printable.style.minHeight = '11in';
       printable.style.boxSizing = 'border-box';
       printable.style.position = 'relative';
@@ -222,7 +227,8 @@
             <div style="color:#666;margin-top:3px;">${bizInfo}</div>
           </div>
           <div style="text-align:right;font-size:13px;color:#333;">
-            <div><strong>Date:</strong> ${date}</div>
+            <div><strong>Bill Date:</strong> ${billDate}</div>
+            <div><strong>Event Date:</strong> ${eventDate}</div>
             <div><strong>Bill No:</strong> ${billNo}</div>
           </div>
         </div>
@@ -257,10 +263,10 @@
       document.body.appendChild(printable);
 
       const opt = {
-        margin: [0.5, 0.5, 0.7, 0.5], // more padding bottom/right
+        margin: [0.4, 0.4, 0.6, 0.4],
         filename: 'TheVoice_Bill.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2.2, useCORS: true, scrollY: 0, letterRendering: true },
+        html2canvas: { scale: 2.2, useCORS: true, scrollY: 0 },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
 

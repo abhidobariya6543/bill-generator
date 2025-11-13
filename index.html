@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <!-- ✅ Disable zoom on iOS input focus -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>The Voice DJ & Events — Bill Generator</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -208,10 +207,10 @@
 
       const printable = document.createElement('div');
       printable.style.fontFamily = 'Arial, Helvetica, sans-serif';
-      printable.style.padding = '35px';
+      printable.style.padding = '35px 45px 50px 40px'; /* top right bottom left */
       printable.style.background = '#fff';
-      printable.style.width = '8.1in';
-      printable.style.minHeight = '11.3in';
+      printable.style.width = '7.8in'; /* narrower width */
+      printable.style.minHeight = '11in';
       printable.style.boxSizing = 'border-box';
       printable.style.position = 'relative';
       printable.style.overflow = 'hidden';
@@ -258,10 +257,10 @@
       document.body.appendChild(printable);
 
       const opt = {
-        margin: [0.4, 0.4, 0.6, 0.4], // increased bottom/right margin
+        margin: [0.5, 0.5, 0.7, 0.5], // more padding bottom/right
         filename: 'TheVoice_Bill.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, scrollY: 0, letterRendering: true },
+        html2canvas: { scale: 2.2, useCORS: true, scrollY: 0, letterRendering: true },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
 

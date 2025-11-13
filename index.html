@@ -6,126 +6,28 @@
   <title>The Voice DJ & Events — Bill Generator</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    :root {
-      --gold: #c59a3d;
-      --dark: #2b2b2b;
-      --muted: #777;
-    }
-
-    body {
-      font-family: Inter, Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-      color: var(--dark);
-    }
-
-    .container {
-      max-width: 820px;
-      margin: auto;
-      background: #fff;
-      border-radius: 10px;
-      padding: 18px;
-      border-top: 6px solid var(--gold);
-      box-shadow: 0 6px 18px rgba(20, 20, 20, 0.06);
-    }
-
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo {
-      height: 60px;
-      width: 60px;
-      border-radius: 6px;
-      object-fit: cover;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 20px;
-      color: var(--dark);
-    }
-
-    .brand p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .info-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .info-row>div { flex: 1; }
-
-    input[type="text"],
-    input[type="number"] {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 14px;
-    }
-
-    th, td {
-      border: 1px solid #e8e8e8;
-      padding: 8px;
-      text-align: left;
-      vertical-align: middle;
-    }
-
-    th { background: #faf9f6; }
-
-    button {
-      background: var(--gold);
-      color: #111;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    button.ghost {
-      background: transparent;
-      border: 1px solid #ddd;
-      color: var(--dark);
-    }
-
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 12px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width:700px) {
-      .info-row { flex-direction: column; }
-    }
+    :root { --gold: #c59a3d; --dark: #2b2b2b; --muted: #777; }
+    body { font-family: Inter, Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 20px; color: var(--dark); }
+    .container { max-width: 820px; margin: auto; background: #fff; border-radius: 10px; padding: 18px; border-top: 6px solid var(--gold); box-shadow: 0 6px 18px rgba(20,20,20,0.06); }
+    .header { display: flex; align-items: center; gap: 12px; }
+    .logo { height: 60px; width: 60px; border-radius: 6px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .brand h1 { margin: 0; font-size: 20px; color: var(--dark); }
+    .brand p { margin: 0; color: var(--muted); font-size: 13px; }
+    .info-row { display: flex; gap: 10px; margin-top: 12px; } .info-row>div { flex: 1; }
+    input[type="text"],input[type="number"] { width: 100%; box-sizing: border-box; padding: 8px; border-radius: 6px; border: 1px solid #ddd; }
+    table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+    th,td { border: 1px solid #e8e8e8; padding: 8px; text-align: left; vertical-align: middle; }
+    th { background: #faf9f6; } button { background: var(--gold); color: #111; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; cursor: pointer; }
+    button.ghost { background: transparent; border: 1px solid #ddd; color: var(--dark); }
+    .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+    .muted { color: var(--muted); font-size: 13px; }
+    @media (max-width:700px) { .info-row { flex-direction: column; } }
   </style>
 </head>
-
 <body>
   <div class="container" id="bill">
     <div class="header">
-      <img src="./TheVoice.jpg" class="logo" alt="The Voice DJ & Events" id="pageLogo" />
+      <img src="./TheVoice.jpg" class="logo" id="pageLogo" alt="The Voice DJ & Events" />
       <div class="brand">
         <h1>The Voice DJ & Events</h1>
         <p>Surat, Gujarat | 📞 +91 92288 63629</p>
@@ -134,33 +36,16 @@
     </div>
 
     <div class="info-row">
-      <div>
-        <label>Customer Name</label><br />
-        <input id="customerName" type="text" placeholder="Customer or client name" />
-      </div>
-      <div>
-        <label>Date</label><br />
-        <input id="billDate" type="text" readonly />
-      </div>
-      <div>
-        <label>Bill No.</label><br />
-        <input id="billNumber" type="text" readonly />
-      </div>
+      <div><label>Customer Name</label><br /><input id="customerName" type="text" placeholder="Customer name" /></div>
+      <div><label>Date</label><br /><input id="billDate" type="text" readonly /></div>
+      <div><label>Bill No.</label><br /><input id="billNumber" type="text" readonly /></div>
     </div>
 
     <table id="itemsTable">
-      <thead>
-        <tr>
-          <th>Item / Service</th>
-          <th>Qty</th>
-          <th>Price (₹)</th>
-          <th>Total (₹)</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Item / Service</th><th>Qty</th><th>Price (₹)</th><th>Total (₹)</th><th>Action</th></tr></thead>
       <tbody id="itemsBody">
         <tr>
-          <td><input class="itemName" type="text" placeholder="DJ Charges, Sound Setup..." /></td>
+          <td><input class="itemName" type="text" placeholder="DJ Charges..." /></td>
           <td><input class="itemQty" type="number" value="1" min="1" onchange="recalc(this)" /></td>
           <td><input class="itemPrice" type="number" value="0" min="0" onchange="recalc(this)" /></td>
           <td class="itemTotal">0.00</td>
@@ -170,14 +55,8 @@
     </table>
 
     <div class="actions">
-      <div>
-        <button onclick="addRow()">➕ Add Item</button>
-        <button class="ghost" onclick="clearAll()">🧹 Clear All</button>
-      </div>
-      <div style="text-align:right;">
-        <div class="muted">Grand Total</div>
-        <div style="font-size:20px; font-weight:700;">₹ <span id="grandTotal">0.00</span></div>
-      </div>
+      <div><button onclick="addRow()">➕ Add Item</button><button class="ghost" onclick="clearAll()">🧹 Clear</button></div>
+      <div style="text-align:right;"><div class="muted">Grand Total</div><div style="font-size:20px;font-weight:700;">₹ <span id="grandTotal">0.00</span></div></div>
     </div>
 
     <div style="display:flex; gap:10px; margin-top:14px;">
@@ -187,146 +66,89 @@
   </div>
 
   <script>
-    function $(id) { return document.getElementById(id); }
+    // 1️⃣ Embed your logo Base64 (no fetch needed, safe for iOS)
+    const logoBase64 = "data:image/jpeg;base64,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"; 
+    // Replace {{YOUR_BASE64_LOGO_HERE}} with your logo converted at https://www.base64-image.de/
 
-    function init() {
-      const today = new Date();
-      $('billDate').value = today.toLocaleDateString('en-IN');
-      $('billNumber').value = 'BILL-' + String(Date.now()).slice(-6);
+    function $(id){return document.getElementById(id);}
+    function init(){
+      const t=new Date();
+      $('billDate').value=t.toLocaleDateString('en-IN');
+      $('billNumber').value='BILL-'+String(Date.now()).slice(-6);
       updateGrandTotal();
     }
 
-    function recalc(el) {
-      const tr = el.closest('tr');
-      const qty = parseFloat(tr.querySelector('.itemQty').value) || 0;
-      const price = parseFloat(tr.querySelector('.itemPrice').value) || 0;
-      tr.querySelector('.itemTotal').textContent = (qty * price).toFixed(2);
+    function recalc(el){
+      const tr=el.closest('tr');
+      const qty=parseFloat(tr.querySelector('.itemQty').value)||0;
+      const price=parseFloat(tr.querySelector('.itemPrice').value)||0;
+      tr.querySelector('.itemTotal').textContent=(qty*price).toFixed(2);
       updateGrandTotal();
     }
 
-    function updateGrandTotal() {
-      let g = 0;
-      document.querySelectorAll('.itemTotal').forEach(td => g += parseFloat(td.textContent) || 0);
-      $('grandTotal').textContent = g.toFixed(2);
+    function updateGrandTotal(){
+      let g=0;document.querySelectorAll('.itemTotal').forEach(td=>g+=parseFloat(td.textContent)||0);
+      $('grandTotal').textContent=g.toFixed(2);
     }
-
-    function addRow() {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><input class="itemName" type="text" placeholder="Item or Service" /></td>
-        <td><input class="itemQty" type="number" value="1" min="1" onchange="recalc(this)" /></td>
-        <td><input class="itemPrice" type="number" value="0" min="0" onchange="recalc(this)" /></td>
-        <td class="itemTotal">0.00</td>
-        <td><button class="ghost" onclick="removeRow(this)">Remove</button></td>`;
+    function addRow(){
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td><input class="itemName" type="text" placeholder="Item" /></td>
+      <td><input class="itemQty" type="number" value="1" min="1" onchange="recalc(this)" /></td>
+      <td><input class="itemPrice" type="number" value="0" min="0" onchange="recalc(this)" /></td>
+      <td class="itemTotal">0.00</td><td><button class="ghost" onclick="removeRow(this)">Remove</button></td>`;
       $('itemsBody').appendChild(tr);
-      tr.querySelector('.itemName').focus();
     }
+    function removeRow(btn){btn.closest('tr').remove();updateGrandTotal();}
+    function clearAll(){$('itemsBody').innerHTML='';addRow();updateGrandTotal();}
 
-    function removeRow(btn) { btn.closest('tr').remove(); updateGrandTotal(); }
-    function clearAll() { $('itemsBody').innerHTML = ''; addRow(); updateGrandTotal(); }
-
-    // Convert image to Base64 for safe PDF inclusion
-    async function toBase64(url) {
-      const res = await fetch(url);
-      const blob = await res.blob();
-      return new Promise(resolve => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
-    }
-
-    async function downloadPDF() {
-      const logoBase64 = await toBase64('./TheVoice.jpg');
-      const bizName = 'The Voice DJ & Events';
-      const bizInfo = 'Surat, Gujarat | 📞 +91 92288 63629';
-      const cust = $('customerName').value.trim() || 'Customer';
-      const date = $('billDate').value;
-      const billNo = $('billNumber').value;
-      const grand = $('grandTotal').textContent;
-
-      const rows = Array.from(document.querySelectorAll('#itemsBody tr'));
-      const rowsHtml = rows.map(r => {
-        const name = (r.querySelector('.itemName')?.value.trim()) || '';
-        if (!name) return '';
-        const qty = r.querySelector('.itemQty').value || '0';
-        const price = (parseFloat(r.querySelector('.itemPrice').value || 0)).toFixed(2);
-        const total = (parseFloat(r.querySelector('.itemTotal').textContent || 0)).toFixed(2);
-        return `<tr>
-          <td style="padding:8px;border:1px solid #eee">${escapeHtml(name)}</td>
-          <td style="padding:8px;border:1px solid #eee;text-align:right">${escapeHtml(qty)}</td>
-          <td style="padding:8px;border:1px solid #eee;text-align:right">${escapeHtml(price)}</td>
-          <td style="padding:8px;border:1px solid #eee;text-align:right">${escapeHtml(total)}</td>
-        </tr>`;
+    async function downloadPDF(){
+      const cust=$('customerName').value||'Customer';
+      const date=$('billDate').value;const billNo=$('billNumber').value;
+      const grand=$('grandTotal').textContent;
+      const rows=Array.from(document.querySelectorAll('#itemsBody tr')).map(r=>{
+        const name=r.querySelector('.itemName').value||'';
+        if(!name)return'';const qty=r.querySelector('.itemQty').value;
+        const price=parseFloat(r.querySelector('.itemPrice').value||0).toFixed(2);
+        const total=parseFloat(r.querySelector('.itemTotal').textContent||0).toFixed(2);
+        return `<tr><td style="border:1px solid #eee;padding:8px;">${name}</td>
+        <td style="border:1px solid #eee;padding:8px;text-align:right">${qty}</td>
+        <td style="border:1px solid #eee;padding:8px;text-align:right">${price}</td>
+        <td style="border:1px solid #eee;padding:8px;text-align:right">${total}</td></tr>`;
       }).join('');
-
-      if (!rowsHtml.trim()) return alert('Please add at least one item before generating PDF.');
-
-      const printable = document.createElement('div');
-      printable.style.fontFamily = 'Arial, Helvetica, sans-serif';
-      printable.style.padding = '22px';
-      printable.style.background = '#fff';
-      printable.style.position = 'relative';
-      printable.innerHTML = `
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-          <img src="${logoBase64}" style="height:60px; width:60px; object-fit:cover; border-radius:6px;" />
-          <div style="flex:1;">
-            <div style="font-size:20px; font-weight:700; color:#111">${escapeHtml(bizName)}</div>
-            <div style="color:#666; margin-top:3px;">${escapeHtml(bizInfo)}</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:13px;"><strong>Date:</strong> ${escapeHtml(date)}</div>
-            <div style="font-size:13px;"><strong>Bill No:</strong> ${escapeHtml(billNo)}</div>
-          </div>
+      if(!rows.trim())return alert('Add at least one item.');
+      const printable=document.createElement('div');
+      printable.style.fontFamily='Arial, sans-serif';printable.style.padding='22px';printable.style.position='relative';
+      printable.innerHTML=`
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <img src="${logoBase64}" style="height:60px;width:60px;object-fit:cover;border-radius:6px;" />
+          <div><div style="font-size:20px;font-weight:700;color:#111">The Voice DJ & Events</div>
+          <div style="color:#666;font-size:13px;">Surat, Gujarat | 📞 +91 92288 63629</div></div>
+          <div style="margin-left:auto;text-align:right;font-size:13px;">
+            <div><b>Date:</b> ${date}</div><div><b>Bill No:</b> ${billNo}</div></div>
         </div>
-        <hr style="border:none; border-top:1px solid #eee; margin:8px 0 12px;" />
-        <div style="margin-bottom:10px;"><strong>Bill To:</strong> ${escapeHtml(cust)}</div>
-        <table style="width:100%; border-collapse:collapse;">
-          <thead>
-            <tr style="background:#faf9f6;">
-              <th style="padding:8px; border:1px solid #eee; text-align:left">Item / Service</th>
-              <th style="padding:8px; border:1px solid #eee; text-align:right">Qty</th>
-              <th style="padding:8px; border:1px solid #eee; text-align:right">Price (₹)</th>
-              <th style="padding:8px; border:1px solid #eee; text-align:right">Total (₹)</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
+        <hr style="border:none;border-top:1px solid #eee;margin:8px 0 12px;" />
+        <div style="margin-bottom:10px;"><b>Bill To:</b> ${cust}</div>
+        <table style="width:100%;border-collapse:collapse;">
+          <thead><tr style="background:#faf9f6;">
+          <th style="border:1px solid #eee;padding:8px;">Item / Service</th>
+          <th style="border:1px solid #eee;padding:8px;text-align:right;">Qty</th>
+          <th style="border:1px solid #eee;padding:8px;text-align:right;">Price (₹)</th>
+          <th style="border:1px solid #eee;padding:8px;text-align:right;">Total (₹)</th>
+          </tr></thead><tbody>${rows}</tbody>
         </table>
-        <div style="text-align:right; margin-top:14px; font-size:18px; font-weight:700;">
-          Grand Total: ₹ ${escapeHtml(grand)}
+        <div style="text-align:right;margin-top:14px;font-size:18px;font-weight:700;">Grand Total: ₹ ${grand}</div>
+        <div style="position:absolute;top:40%;left:0;width:100%;text-align:center;
+          transform:rotate(-30deg);opacity:0.1;pointer-events:none;">
+          <span style="font-size:40px;font-weight:700;color:#c59a3d;">The Voice DJ & Events</span>
         </div>
-        <!-- Diagonal Watermark -->
-        <div style="position:absolute; top:40%; left:0; width:100%; text-align:center;
-            transform:rotate(-30deg); opacity:0.1; z-index:0; pointer-events:none;">
-          <span style="font-size:40px; font-weight:700; color:#c59a3d; letter-spacing:3px;">
-            The Voice DJ & Events
-          </span>
-        </div>
-        <div style="margin-top:28px; color:#777; font-size:12px;">
-          Thank you for choosing ${escapeHtml(bizName)}. For queries contact ${escapeHtml(bizInfo)}
-        </div>
-      `;
-
+        <div style="margin-top:28px;color:#777;font-size:12px;">Thank you for choosing The Voice DJ & Events.</div>`;
       document.body.appendChild(printable);
-      const opt = {
-        margin: 0.5,
-        filename: 'TheVoice_Bill.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-      };
-      await new Promise(r => setTimeout(r, 150));
+      const opt={margin:0.5,filename:'TheVoice_Bill.pdf',image:{type:'jpeg',quality:1},
+        html2canvas:{scale:2,useCORS:false,scrollY:0},jsPDF:{unit:'in',format:'a4'}};
+      await new Promise(r=>setTimeout(r,150));
       await html2pdf().from(printable).set(opt).save();
       printable.remove();
     }
-
-    function escapeHtml(s) {
-      if (s == null) return '';
-      return String(s).replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;').replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-    }
-
     init();
   </script>
 </body>

@@ -183,8 +183,18 @@
       $('pendingPayment').value = pending.toFixed(2);
     }
 
-    function downloadPDF() {
-      const logoSrc = './TheVoice.jpg';
+    async function toDataUrl(url) {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    async function downloadPDF() {
+      const logoSrc = await toDataUrl('./TheVoice.jpg'); // fix image visibility
       const bizName = 'The Voice DJ & Events';
       const bizInfo = 'Surat, Gujarat | 📞 +91 92288 63629';
       const cust = $('customerName').value.trim() || 'Customer';
@@ -215,48 +225,57 @@
       printable.style.padding = '35px 40px';
       printable.style.background = '#fff';
       printable.style.width = '7.6in';
-      printable.style.boxSizing = 'border-box';
       printable.style.position = 'relative';
       printable.innerHTML = `
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <img src="${logoSrc}" style="height:60px;width:60px;border-radius:6px;object-fit:cover;">
-          <div style="flex:1;">
-            <div style="font-size:20px;font-weight:700;color:#111">${bizName}</div>
-            <div style="color:#666;margin-top:3px;">${bizInfo}</div>
+        <div style="position:relative;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+            <img src="${logoSrc}" style="height:60px;width:60px;border-radius:6px;object-fit:cover;">
+            <div style="flex:1;">
+              <div style="font-size:20px;font-weight:700;color:#111">${bizName}</div>
+              <div style="color:#666;margin-top:3px;">${bizInfo}</div>
+            </div>
+            <div style="text-align:right;font-size:13px;color:#333;">
+              <div><strong>Bill Date:</strong> ${billDate}</div>
+              <div><strong>Event Date:</strong> ${eventDate}</div>
+              <div><strong>Bill No:</strong> ${billNo}</div>
+            </div>
           </div>
-          <div style="text-align:right;font-size:13px;color:#333;">
-            <div><strong>Bill Date:</strong> ${billDate}</div>
-            <div><strong>Event Date:</strong> ${eventDate}</div>
-            <div><strong>Bill No:</strong> ${billNo}</div>
+          <hr style="border:none;border-top:1px solid #eee;margin:8px 0 12px;" />
+          <div style="margin-bottom:10px;"><strong>Bill To:</strong> ${cust}</div>
+
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#faf9f6;">
+                <th style="padding:8px;border:1px solid #eee;text-align:left;">Item / Service</th>
+                <th style="padding:8px;border:1px solid #eee;text-align:right;">Qty</th>
+                <th style="padding:8px;border:1px solid #eee;text-align:right;">Price (₹)</th>
+                <th style="padding:8px;border:1px solid #eee;text-align:right;">Total (₹)</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+
+          <table style="width:100%;border-collapse:collapse;margin-top:20px;">
+            <tr><td style="padding:8px;border:1px solid #eee;">Grand Total</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${grand}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #eee;">Advance Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${advance}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #eee;font-weight:700;">Pending Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;font-weight:700;">₹ ${pending}</td></tr>
+          </table>
+
+          <!-- Diagonal Watermark -->
+          <div style="
+            position:absolute;
+            left:0; bottom:0;
+            width:100%; height:100%;
+            display:flex; justify-content:center; align-items:center;
+            transform:rotate(-45deg);
+            opacity:0.08;
+            pointer-events:none;
+          ">
+            <span style="font-size:65px;font-weight:700;color:#c59a3d;">The Voice DJ & Events</span>
           </div>
+
+          <div style="margin-top:20px;color:#777;font-size:12px;">Thank you for choosing ${bizName}. For queries contact ${bizInfo}</div>
         </div>
-        <hr style="border:none;border-top:1px solid #eee;margin:8px 0 12px;" />
-        <div style="margin-bottom:10px;"><strong>Bill To:</strong> ${cust}</div>
-
-        <table style="width:100%;border-collapse:collapse;">
-          <thead>
-            <tr style="background:#faf9f6;">
-              <th style="padding:8px;border:1px solid #eee;text-align:left;">Item / Service</th>
-              <th style="padding:8px;border:1px solid #eee;text-align:right;">Qty</th>
-              <th style="padding:8px;border:1px solid #eee;text-align:right;">Price (₹)</th>
-              <th style="padding:8px;border:1px solid #eee;text-align:right;">Total (₹)</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-
-        <table style="width:100%;border-collapse:collapse;margin-top:20px;">
-          <tr><td style="padding:8px;border:1px solid #eee;">Grand Total</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${grand}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #eee;">Advance Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${advance}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #eee;font-weight:700;">Pending Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;font-weight:700;">₹ ${pending}</td></tr>
-        </table>
-
-        <!-- Watermark moved BELOW content -->
-        <div style="width:100%;text-align:center;margin-top:40px;opacity:0.1;">
-          <span style="font-size:40px;font-weight:700;color:#c59a3d;">The Voice DJ & Events</span>
-        </div>
-
-        <div style="margin-top:20px;color:#777;font-size:12px;">Thank you for choosing ${bizName}. For queries contact ${bizInfo}</div>
       `;
 
       document.body.appendChild(printable);
@@ -264,10 +283,10 @@
       const opt = {
         margin: [0.3, 0.3, 0.4, 0.3],
         filename: 'TheVoice_Bill.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
+        image: { type: 'jpeg', quality: 1 },
         html2canvas: { scale: 2.2, useCORS: true, scrollY: 0 },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-        pagebreak: { avoid: 'table' } // ensures single page
+        pagebreak: { avoid: 'table' }
       };
 
       setTimeout(() => {

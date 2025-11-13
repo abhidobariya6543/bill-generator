@@ -193,110 +193,113 @@
       });
     }
 
-    async function downloadPDF() {
-      const logoSrc = await toDataUrl('./TheVoice.jpg'); // fix image visibility
-      const bizName = 'The Voice DJ & Events';
-      const bizInfo = 'Surat, Gujarat | 📞 +91 92288 63629';
-      const cust = $('customerName').value.trim() || 'Customer';
-      const billDate = $('billDate').value;
-      const eventDate = $('eventDate').value ? new Date($('eventDate').value).toLocaleDateString('en-IN') : '—';
-      const billNo = $('billNumber').value;
-      const grand = $('grandTotal').textContent;
-      const advance = parseFloat($('advancePayment').value || 0).toFixed(2);
-      const pending = parseFloat($('pendingPayment').value || 0).toFixed(2);
+  async function downloadPDF() {
+  const logoSrc = await toDataUrl('./TheVoice.jpg');
+  const bizName = 'The Voice DJ & Events';
+  const bizInfo = 'Surat, Gujarat | 📞 +91 92288 63629';
+  const cust = $('customerName').value.trim() || 'Customer';
+  const billDate = $('billDate').value;
+  const eventDate = $('eventDate').value ? new Date($('eventDate').value).toLocaleDateString('en-IN') : '—';
+  const billNo = $('billNumber').value;
+  const grand = $('grandTotal').textContent;
+  const advance = parseFloat($('advancePayment').value || 0).toFixed(2);
+  const pending = parseFloat($('pendingPayment').value || 0).toFixed(2);
 
-      const rows = Array.from(document.querySelectorAll('#itemsBody tr'));
-      const rowsHtml = rows.map(r => {
-        const name = r.querySelector('.itemName').value.trim();
-        if (!name) return '';
-        const qty = r.querySelector('.itemQty').value;
-        const price = parseFloat(r.querySelector('.itemPrice').value || 0).toFixed(2);
-        const total = parseFloat(r.querySelector('.itemTotal').textContent || 0).toFixed(2);
-        return `<tr>
-          <td style="padding:8px;border:1px solid #eee">${name}</td>
-          <td style="padding:8px;border:1px solid #eee;text-align:right">${qty}</td>
-          <td style="padding:8px;border:1px solid #eee;text-align:right">${price}</td>
-          <td style="padding:8px;border:1px solid #eee;text-align:right">${total}</td>
-        </tr>`;
-      }).join('');
+  const rows = Array.from(document.querySelectorAll('#itemsBody tr'));
+  const rowsHtml = rows.map(r => {
+    const name = r.querySelector('.itemName').value.trim();
+    if (!name) return '';
+    const qty = r.querySelector('.itemQty').value;
+    const price = parseFloat(r.querySelector('.itemPrice').value || 0).toFixed(2);
+    const total = parseFloat(r.querySelector('.itemTotal').textContent || 0).toFixed(2);
+    return `<tr>
+      <td style="padding:8px;border:1px solid #eee">${name}</td>
+      <td style="padding:8px;border:1px solid #eee;text-align:right">${qty}</td>
+      <td style="padding:8px;border:1px solid #eee;text-align:right">${price}</td>
+      <td style="padding:8px;border:1px solid #eee;text-align:right">${total}</td>
+    </tr>`;
+  }).join('');
 
-      const printable = document.createElement('div');
-      printable.style.fontFamily = 'Arial, Helvetica, sans-serif';
-      printable.style.padding = '35px 40px';
-      printable.style.background = '#fff';
-      printable.style.width = '7.6in';
-      printable.style.position = 'relative';
-      printable.innerHTML = `
-        <div style="position:relative;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-            <img src="${logoSrc}" style="height:60px;width:60px;border-radius:6px;object-fit:cover;">
-            <div style="flex:1;">
-              <div style="font-size:20px;font-weight:700;color:#111">${bizName}</div>
-              <div style="color:#666;margin-top:3px;">${bizInfo}</div>
-            </div>
-            <div style="text-align:right;font-size:13px;color:#333;">
-              <div><strong>Bill Date:</strong> ${billDate}</div>
-              <div><strong>Event Date:</strong> ${eventDate}</div>
-              <div><strong>Bill No:</strong> ${billNo}</div>
-            </div>
-          </div>
-          <hr style="border:none;border-top:1px solid #eee;margin:8px 0 12px;" />
-          <div style="margin-bottom:10px;"><strong>Bill To:</strong> ${cust}</div>
-
-          <table style="width:100%;border-collapse:collapse;">
-            <thead>
-              <tr style="background:#faf9f6;">
-                <th style="padding:8px;border:1px solid #eee;text-align:left;">Item / Service</th>
-                <th style="padding:8px;border:1px solid #eee;text-align:right;">Qty</th>
-                <th style="padding:8px;border:1px solid #eee;text-align:right;">Price (₹)</th>
-                <th style="padding:8px;border:1px solid #eee;text-align:right;">Total (₹)</th>
-              </tr>
-            </thead>
-            <tbody>${rowsHtml}</tbody>
-          </table>
-
-          <table style="width:100%;border-collapse:collapse;margin-top:20px;">
-            <tr><td style="padding:8px;border:1px solid #eee;">Grand Total</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${grand}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #eee;">Advance Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${advance}</td></tr>
-            <tr><td style="padding:8px;border:1px solid #eee;font-weight:700;">Pending Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;font-weight:700;">₹ ${pending}</td></tr>
-          </table>
-
-          <!-- Diagonal Watermark -->
-          <div style="
-            position:absolute;
-            left:0; bottom:0;
-            width:100%; height:100%;
-            display:flex; justify-content:center; align-items:center;
-            transform:rotate(-45deg);
-            opacity:0.08;
-            pointer-events:none;
-          ">
-            <span style="font-size:65px;font-weight:700;color:#c59a3d;">The Voice DJ & Events</span>
-          </div>
-
-          <div style="margin-top:20px;color:#777;font-size:12px;">Thank you for choosing ${bizName}. For queries contact ${bizInfo}</div>
+  const printable = document.createElement('div');
+  printable.style.fontFamily = 'Arial, Helvetica, sans-serif';
+  printable.style.padding = '35px 35px';
+  printable.style.background = '#fff';
+  printable.style.width = '7.3in'; // reduced width to fit A4
+  printable.style.position = 'relative';
+  printable.innerHTML = `
+    <div style="position:relative;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <img src="${logoSrc}" style="height:60px;width:60px;border-radius:6px;object-fit:cover;">
+        <div style="flex:1;">
+          <div style="font-size:20px;font-weight:700;color:#111">${bizName}</div>
+          <div style="color:#666;margin-top:3px;">${bizInfo}</div>
         </div>
-      `;
+        <div style="text-align:right;font-size:13px;color:#333;">
+          <div><strong>Bill Date:</strong> ${billDate}</div>
+          <div><strong>Event Date:</strong> ${eventDate}</div>
+          <div><strong>Bill No:</strong> ${billNo}</div>
+        </div>
+      </div>
+      <hr style="border:none;border-top:1px solid #eee;margin:8px 0 12px;" />
+      <div style="margin-bottom:10px;"><strong>Bill To:</strong> ${cust}</div>
 
-      document.body.appendChild(printable);
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#faf9f6;">
+            <th style="padding:8px;border:1px solid #eee;text-align:left;">Item / Service</th>
+            <th style="padding:8px;border:1px solid #eee;text-align:right;">Qty</th>
+            <th style="padding:8px;border:1px solid #eee;text-align:right;">Price (₹)</th>
+            <th style="padding:8px;border:1px solid #eee;text-align:right;">Total (₹)</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
 
-      const opt = {
-        margin: [0.3, 0.3, 0.6, 0.3],
-        filename: 'TheVoice_Bill.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2.2, useCORS: true, scrollY: 0 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-        pagebreak: { avoid: 'table' }
-      };
+      <table style="width:100%;border-collapse:collapse;margin-top:20px;">
+        <tr><td style="padding:8px;border:1px solid #eee;">Grand Total</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${grand}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #eee;">Advance Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${advance}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #eee;font-weight:700;">Pending Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;font-weight:700;">₹ ${pending}</td></tr>
+      </table>
 
-      setTimeout(() => {
-        html2pdf().from(printable).set(opt).save().then(() => printable.remove());
-      }, 150);
-    }
+      <!-- Fixed Diagonal Watermark -->
+      <div style="
+        position:absolute;
+        left:-25%; bottom:-25%;
+        width:150%; height:150%;
+        display:flex; justify-content:center; align-items:center;
+        transform:rotate(-45deg);
+        opacity:0.08;
+        pointer-events:none;
+      ">
+        <span style="font-size:70px;font-weight:700;color:#c59a3d;">The Voice DJ & Events</span>
+      </div>
+
+      <div style="margin-top:20px;color:#777;font-size:12px;">
+        Thank you for choosing ${bizName}. For queries contact ${bizInfo}
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(printable);
+
+  const opt = {
+    margin: [0.3, 0.3, 0.6, 0.3],
+    filename: 'TheVoice_Bill.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2.2, useCORS: true, scrollY: 0 },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+    pagebreak: { avoid: 'table' }
+  };
+
+  setTimeout(() => {
+    html2pdf().from(printable).set(opt).save().then(() => printable.remove());
+  }, 150);
+}
 
     init();
   </script>
 </body>
 </html>
+
 
 

@@ -208,11 +208,13 @@
 
       const printable = document.createElement('div');
       printable.style.fontFamily = 'Arial, Helvetica, sans-serif';
-      printable.style.padding = '25px';
+      printable.style.padding = '35px';
       printable.style.background = '#fff';
-      printable.style.width = '100%';
+      printable.style.width = '8.1in';
+      printable.style.minHeight = '11.3in';
       printable.style.boxSizing = 'border-box';
       printable.style.position = 'relative';
+      printable.style.overflow = 'hidden';
       printable.innerHTML = `
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <img src="${logoSrc}" style="height:60px;width:60px;border-radius:6px;object-fit:cover;">
@@ -240,7 +242,7 @@
           <tbody>${rowsHtml}</tbody>
         </table>
 
-        <table style="width:100%;border-collapse:collapse;margin-top:18px;">
+        <table style="width:100%;border-collapse:collapse;margin-top:20px;">
           <tr><td style="padding:8px;border:1px solid #eee;">Grand Total</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${grand}</td></tr>
           <tr><td style="padding:8px;border:1px solid #eee;">Advance Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;">₹ ${advance}</td></tr>
           <tr><td style="padding:8px;border:1px solid #eee;font-weight:700;">Pending Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;font-weight:700;">₹ ${pending}</td></tr>
@@ -250,17 +252,19 @@
           <span style="font-size:40px;font-weight:700;color:#c59a3d;">The Voice DJ & Events</span>
         </div>
 
-        <div style="margin-top:28px;color:#777;font-size:12px;">Thank you for choosing ${bizName}. For queries contact ${bizInfo}</div>
+        <div style="margin-top:40px;color:#777;font-size:12px;">Thank you for choosing ${bizName}. For queries contact ${bizInfo}</div>
       `;
 
       document.body.appendChild(printable);
+
       const opt = {
-        margin: [0.5, 0.4, 0.5, 0.4], // left/right margin fix
+        margin: [0.4, 0.4, 0.6, 0.4], // increased bottom/right margin
         filename: 'TheVoice_Bill.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0, letterRendering: true },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
+
       setTimeout(() => {
         html2pdf().from(printable).set(opt).save().then(() => printable.remove());
       }, 150);

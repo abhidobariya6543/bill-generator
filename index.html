@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <!-- ✅ Disable zoom on iOS input focus -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>The Voice DJ & Events — Bill Generator</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -25,35 +26,35 @@
       border-radius: 10px;
       padding: 18px;
       border-top: 6px solid var(--gold);
-      box-shadow: 0 6px 18px rgba(20, 20, 20, 0.06);
+      box-shadow: 0 6px 18px rgba(20,20,20,0.06);
     }
-    .header { display: flex; align-items: center; gap: 12px; }
+    .header { display:flex; align-items:center; gap:12px; }
     .logo {
-      height: 60px; width: 60px; border-radius: 6px; object-fit: cover;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      height:60px; width:60px; border-radius:6px; object-fit:cover;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
     }
-    .brand h1 { margin: 0; font-size: 20px; color: var(--dark); }
-    .brand p { margin: 0; color: var(--muted); font-size: 13px; }
-    .info-row { display: flex; gap: 10px; margin-top: 12px; }
-    .info-row > div { flex: 1; }
-    input, textarea {
-      width: 100%; box-sizing: border-box; padding: 8px;
-      border-radius: 6px; border: 1px solid #ddd; font-size: 16px;
+    .brand h1 { margin:0; font-size:20px; color:var(--dark); }
+    .brand p { margin:0; color:var(--muted); font-size:13px; }
+    .info-row { display:flex; gap:10px; margin-top:12px; }
+    .info-row>div { flex:1; }
+    input {
+      width:100%; box-sizing:border-box; padding:8px;
+      border-radius:6px; border:1px solid #ddd; font-size:16px;
     }
-    table { width: 100%; border-collapse: collapse; margin-top: 14px; }
-    th, td { border: 1px solid #e8e8e8; padding: 8px; text-align: left; }
-    th { background: #faf9f6; }
+    table { width:100%; border-collapse:collapse; margin-top:14px; }
+    th, td { border:1px solid #e8e8e8; padding:8px; text-align:left; }
+    th { background:#faf9f6; }
     button {
-      background: var(--gold); color: #111; border: none;
-      border-radius: 8px; padding: 8px 12px; font-weight: 600;
-      cursor: pointer; font-size: 15px;
+      background:var(--gold); color:#111; border:none;
+      border-radius:8px; padding:8px 12px; font-weight:600;
+      cursor:pointer; font-size:15px;
     }
-    button.ghost { background: transparent; border: 1px solid #ddd; color: var(--dark); }
-    .actions { display: flex; justify-content: space-between; margin-top: 12px; flex-wrap: wrap; gap: 10px; }
-    .muted { color: var(--muted); font-size: 13px; }
+    button.ghost { background:transparent; border:1px solid #ddd; color:var(--dark); }
+    .actions { display:flex; justify-content:space-between; margin-top:12px; flex-wrap:wrap; gap:10px; }
+    .muted { color:var(--muted); font-size:13px; }
     @media (max-width:700px) {
-      .info-row { flex-direction: column; }
-      .actions { flex-direction: column; }
+      .info-row { flex-direction:column; }
+      .actions { flex-direction:column; }
     }
   </style>
 </head>
@@ -207,10 +208,11 @@
 
       const printable = document.createElement('div');
       printable.style.fontFamily = 'Arial, Helvetica, sans-serif';
-      printable.style.padding = '22px';
+      printable.style.padding = '25px';
       printable.style.background = '#fff';
+      printable.style.width = '100%';
+      printable.style.boxSizing = 'border-box';
       printable.style.position = 'relative';
-      printable.style.overflow = 'hidden';
       printable.innerHTML = `
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <img src="${logoSrc}" style="height:60px;width:60px;border-radius:6px;object-fit:cover;">
@@ -253,7 +255,7 @@
 
       document.body.appendChild(printable);
       const opt = {
-        margin: 0.5,
+        margin: [0.5, 0.4, 0.5, 0.4], // left/right margin fix
         filename: 'TheVoice_Bill.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },

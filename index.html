@@ -193,7 +193,7 @@
       });
     }
 
-  async function downloadPDF() {
+ async function downloadPDF() {
   const logoSrc = await toDataUrl('./TheVoice.jpg');
   const bizName = 'The Voice DJ & Events';
   const bizInfo = 'Surat, Gujarat | 📞 +91 92288 63629';
@@ -222,9 +222,9 @@
 
   const printable = document.createElement('div');
   printable.style.fontFamily = 'Arial, Helvetica, sans-serif';
-  printable.style.padding = '35px 35px';
+  printable.style.padding = '35px 32px';
   printable.style.background = '#fff';
-  printable.style.width = '7.3in'; // reduced width to fit A4
+  printable.style.width = '7.05in'; // <— exact safe width for A4
   printable.style.position = 'relative';
   printable.innerHTML = `
     <div style="position:relative;">
@@ -261,7 +261,7 @@
         <tr><td style="padding:8px;border:1px solid #eee;font-weight:700;">Pending Payment</td><td style="padding:8px;border:1px solid #eee;text-align:right;font-weight:700;">₹ ${pending}</td></tr>
       </table>
 
-      <!-- Fixed Diagonal Watermark -->
+      <!-- Proper Diagonal Watermark -->
       <div style="
         position:absolute;
         left:-25%; bottom:-25%;
@@ -271,7 +271,7 @@
         opacity:0.08;
         pointer-events:none;
       ">
-        <span style="font-size:70px;font-weight:700;color:#c59a3d;">The Voice DJ & Events</span>
+        <span style="font-size:68px;font-weight:700;color:#c59a3d;">The Voice DJ & Events</span>
       </div>
 
       <div style="margin-top:20px;color:#777;font-size:12px;">
@@ -283,10 +283,10 @@
   document.body.appendChild(printable);
 
   const opt = {
-    margin: [0.3, 0.3, 0.6, 0.3],
+    margin: [0.25, 0.25, 0.45, 0.25],  // narrower printable area
     filename: 'TheVoice_Bill.pdf',
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2.2, useCORS: true, scrollY: 0 },
+    html2canvas: { scale: 2.2, useCORS: true, scrollY: 0, x: 0, y: 0 },
     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
     pagebreak: { avoid: 'table' }
   };
@@ -300,6 +300,7 @@
   </script>
 </body>
 </html>
+
 
 
 
